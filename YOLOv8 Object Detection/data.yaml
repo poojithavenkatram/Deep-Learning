@@ -1,0 +1,69 @@
+
+train: /content/drive/MyDrive/Lab/Part 3/carla-object-detection-dataset/yolo_dataset/train
+val: /content/drive/MyDrive/Lab/Part 3/carla-object-detection-dataset/yolo_dataset/val
+test: /content/drive/MyDrive/Lab/Part 3/carla-object-detection-dataset/yolo_dataset/test
+
+nc: 5
+
+names: ['vehicle','bike','motorbike','traffic_light','traffic_sign']
+
+augmentations:
+  - RandomSizedCrop:
+      min_max_height: [800, 1024]  # Crop height from 800 to 1024
+      height: 1024  # Resize output to 1024 height
+      width: 1024  # Resize output to 1024 width
+      p: 0.5  # Probability of 50%
+      
+  - HorizontalFlip:
+      p: 0.5  # Probability of 50%
+      
+  - RandomBrightnessContrast:
+      brightness_limit: 0.2  # Increase the brightness limit for more variability
+      contrast_limit: 0.2  # Increase the contrast limit for more variability
+      p: 0.5  # Probability of 50%
+      
+  - RGBShift:
+      r_shift_limit: 20  # Shift the Red value by up to +/- 20
+      g_shift_limit: 20  # Shift the Green value by up to +/- 20
+      b_shift_limit: 20  # Shift the Blue value by up to +/- 20
+      p: 0.5  # Probability of 50%
+      
+  - Blur:
+      blur_limit: 10  # Increase blur for simulating low-focus images
+      p: 0.1  # Lower probability to not overdo blurring
+      
+  - GaussNoise:
+      var_limit: (10.0, 50.0)  # Variance of noise remains the same
+      p: 0.5  # Probability of 50%
+      
+  - CLAHE:  # Apply Contrast Limited Adaptive Histogram Equalization
+      clip_limit: 2.0
+      p: 0.5  # Probability of 50%
+      
+  - CoarseDropout:  # Randomly remove pixels to simulate sensor noise/dust
+      max_holes: 8
+      max_height: 8
+      max_width: 8
+      min_holes: 1
+      min_height: 1
+      min_width: 1
+      fill_value: 0  # Value for the dropped pixels
+      p: 0.5  # Probability of 50%
+
+
+# - Albumentations:
+#     blur_limit: 7
+#     brightness_contrast: 
+#       brightness_limit: 0.1
+#       contrast_limit: 0.1
+#     crop:
+#       height: 1024
+#       width: 1024
+#     gauss_noise:
+#       var_limit: (10.0, 50.0)
+#     horizontal_flip: true
+#     hue_saturation:
+#       hue_shift_limit: 20
+#       sat_shift_limit: 50
+#     motion_blur:
+#       blur_limit: 7
